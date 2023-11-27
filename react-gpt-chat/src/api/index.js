@@ -19,8 +19,7 @@ export function callApi({ method = "get", url, params, data }) {
     params,
     data,
     withCredentials: true, // 사용자 인증을위해 토큰을 쿠키로 저장해서 이용하기 위한 옵션
-  })
-    .then((response) => {
+  }).then((response) => {
       const { resultCode, resultMessage, totalCount } = response.data;
       if (resultCode < 0) {
         message.error(resultMessage);
