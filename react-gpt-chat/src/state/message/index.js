@@ -1,4 +1,5 @@
 import { createReducer } from '../../common/redux-helper';
+import { getInitializeMessage } from '../../common/message-helper'
 
 export const types = {
   REQUEST_MESSAGE: 'message/REQUEST_MESSAGE',
@@ -12,7 +13,7 @@ export const actions = {
   pendingMessageState: isPendingMessageState => ({type : types.PENDING_MESSAGE_STATE, isPendingMessageState}),
 }
 
-const INITIAL_STATE = { messages: [], isPendingMessageState: false };
+const INITIAL_STATE = { messages: [ getInitializeMessage ], isPendingMessageState: false };
 const reducer = createReducer(INITIAL_STATE, {
   [types.ADD_MESSAGE]: (state, action) => state.messages.push(action.message),
   [types.PENDING_MESSAGE_STATE]: (state, action) => state.isPendingMessageState = action.isPendingMessageState,

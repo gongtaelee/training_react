@@ -1,13 +1,12 @@
 import React, { useEffect, useRef } from 'react';
 import ChatMessage from './ChatMessage';
-import { getMessages, getPendingMessageState } from '../../state/message/selector';
+import { getMessages } from '../../state/message/selector';
 import { useSelector } from 'react-redux';
 
 export default function ChatArea(){
 
     const dummy = useRef();
     const messages = useSelector(getMessages);
-    const isPending = useSelector(getPendingMessageState);
 
     useEffect(() => {
         dummy.current.scrollIntoView({ behavior: 'smooth' });
