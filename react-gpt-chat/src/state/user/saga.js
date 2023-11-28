@@ -1,4 +1,4 @@
-import { all, call, put, takeLeading, takeEvery } from 'redux-saga/effects';
+import { all, call, put, takeLeading, takeEvery, takeLatest } from 'redux-saga/effects';
 import { actions, types } from './index';
 import { apiGet } from '../../api';
 
@@ -10,16 +10,17 @@ function* fetchUser(action){
         3. 백엔드에서 복호화 후 사용자 데이터 추출
         4. 백엔드에서 받은 사용자 데이터 활용 (토큰이 필요한 api 요청 시)
     */
-    const response = yield call(apiGet, {
-        endPoint: '/bqai/api/v1/user/login',
-        data: {secretKey : action.user.secretKey},
-    });
-
-    // to do 
-    // 예외 처리
-
-    if (response){
-        yield put(actions.setValue('user', response));
+   try{
+        const response = yield call(apiGet, {
+            endPoint: '/bqai/api/v1/user/login',
+            data: {secretKey : action.user.secretKey},
+        });
+        if (response){
+            yield put(actions.setValue('user', response));
+        }
+    } catch (error){
+        // 에러 처리 검토
+        // console.log(error)
     }
 }
 

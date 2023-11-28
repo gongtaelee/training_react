@@ -10,13 +10,13 @@ export const types = {
 export const actions = {
   requestMessage: message => ({ type: types.REQUEST_MESSAGE, message}),
   addMessage: message => ({ type : types.ADD_MESSAGE, message}),
-  pendingMessageState: isPendingMessageState => ({type : types.PENDING_MESSAGE_STATE, isPendingMessageState}),
+  pendingMessageState: isPendingMessage => ({type : types.PENDING_MESSAGE_STATE, isPendingMessage}),
 }
 
-const INITIAL_STATE = { messages: [ getInitializeMessage ], isPendingMessageState: false };
+const INITIAL_STATE = { messages: [ getInitializeMessage ], isPendingMessage: false };
 const reducer = createReducer(INITIAL_STATE, {
   [types.ADD_MESSAGE]: (state, action) => state.messages.push(action.message),
-  [types.PENDING_MESSAGE_STATE]: (state, action) => state.isPendingMessageState = action.isPendingMessageState,
+  [types.PENDING_MESSAGE_STATE]: (state, action) => state.isPendingMessage = action.isPendingMessage,
 });
 
 export default reducer;

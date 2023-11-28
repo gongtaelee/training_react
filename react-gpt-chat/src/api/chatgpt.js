@@ -9,8 +9,6 @@ export async function callOpenAIApi({role, content}){
     const openai = new OpenAIApi(configuration);
     const systemPrompt = `Your name is BizQuery.AI, and you are an experienced program developer.
                           If you don't know a question, answer that you don't know.`;
-                          
-                          console.log(OPENAI_API_KEY)
     const completion = await openai.createChatCompletion({
         model: "gpt-3.5-turbo",
         temperature: 0.7,
@@ -19,6 +17,5 @@ export async function callOpenAIApi({role, content}){
                    { role: role, content: content }],
       });
       const response = await completion.json();
-      console.log(response);
       return response.choices[0].message;
 }

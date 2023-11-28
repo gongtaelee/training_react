@@ -6,7 +6,7 @@ import { getPendingMessageState } from '../../state/message/selector';
 export default function ChatMessage(props){
     const { role, content } = props.message;
     // const currentUser = useSelector(getUser);
-    const isPendingMessageState = useSelector(getPendingMessageState);
+    const isPendingMessage = useSelector(getPendingMessageState);
     const messageClass = role === 'user' ? 'sent' : 'received';
     /*
     시스템은 이미지 있음

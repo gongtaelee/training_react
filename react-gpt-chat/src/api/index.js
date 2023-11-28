@@ -1,9 +1,8 @@
 import axios from 'axios';
-import { API_HOST } from '../common/constant';
+import { API_HOST_PORT } from '../common/constant';
 
-const BASE_URL = `${window.location.protocol}//${window.location.hostname}${API_HOST}`/* + "/api/v1"*/;
-export {BASE_URL};
-
+const BASE_URL = `${window.location.protocol}//${window.location.hostname}${API_HOST_PORT}`/* + "/api/v1"*/;
+// export {BASE_URL};
 // export function getUserId() {
 //     return sessionStorage.getItem('userId');;
 // }
@@ -48,132 +47,40 @@ export function getItem(key) {
 //     return {};
 // }
 
-
-/**
- *
- * @param {object} param
- * @param {'get' | 'post' =} param.method
- * @param {string} param.url
- * @param {object=} param.params
- * @param {object=} param.data
- * @param {object=} param.totalCount
- */
-async function apiReq(    
+async function apiReq(
     endPoint,
     data,
     method,
     headers,
     token,
-    requestOptions = {}) {
+    requestOptions = {}
+) {
+    return new Promise(async (resolve, reject) => {
+        const getTokenHeader = token && { Authorization: `${token}` };
+        headers = {
+            ...getTokenHeader,
+            ...headers
+        };
 
-    const getTokenHeader = token && { Authorization: `${token}` };
-    headers = {
-        ...getTokenHeader,
-        ...headers
-    };
-    if (method === 'get' || method === 'delete') {
-        data = {
-            ...requestOptions,
-            ...data,
-            headers
-        };
-    }
-    console.log(BASE_URL)
-    axios.defaults.baseURL = BASE_URL;
-    axios[method](endPoint, data, { headers })
-    .then(result => {
-        const { data } = {"data": result};
-        return data;
-        // if (data.status === false) {
-        //     return data;
-        // }
-        // return data;
-    })
-    .catch(() => {
-        return {
-            isSuccess: false,
-        };
+        if (method === 'get' || method === 'delete') {
+            data = {
+                ...requestOptions,
+                ...data,
+                headers
+            };
+        }
+
+        axios.defaults.baseURL = BASE_URL;
+        axios[method](endPoint, data, { headers })
+            .then(result => {
+                const res_json = JSON.parse(result);
+                if (res_json.status === 'fail') {
+                    return reject(res_json);
+                }
+                return resolve(res_json.response);
+            })
+            .catch(error => {
+                return reject(error);
+            });
     });
-
-    // return axios({
-    //   url,
-    //   method,
-    //   baseURL: API_HOST,
-    //   params,
-    //   data,
-    //   token,
-    //   headers,
-    //   withCredentials: true,
-    // })
-    //   .then((response) => {
-    //     const { resultCode, resultMessage, totalCount } = response.data;
-    //     if (resultCode < 0) {
-    //       message.error(resultMessage);
-    //     }
-    //     return {
-    //       isSuccess: resultCode === ResultCode.Success,
-    //       data: response.data.data,
-    //       resultCode,
-    //       resultMessage,
-    //       totalCount,
-    //     };
-    //   })
-    //   .catch(() => {
-    //     return {
-    //       isSuccess: false,
-    //     };
-    //   });
-  }
-
-
-
-// async function apiReq(
-//     endPoint,
-//     data,
-//     method,
-//     headers,
-//     token,
-//     requestOptions = {}
-// ) {
-//     return new Promise(async (res, rej) => {
-//         const getTokenHeader = token && { Authorization: `${token}` };
-//         headers = {
-//             ...getTokenHeader,
-//             ...headers
-//         };
-
-//         if (method === 'get' || method === 'delete') {
-//             data = {
-//                 ...requestOptions,
-//                 ...data,
-//                 headers
-//             };
-//         }
-
-//         axios.defaults.baseURL = BASE_URL;
-//         axios[method](endPoint, data, { headers })
-//             .then(result => {
-//                 const { data } = {"data": result};
-//                 if (data.status === false) {
-//                     return rej(data);
-//                 }
-//                 return res(data);
-//             })
-//             .catch(error => {
-//                 return res(error);
-//                 // console.log(error)
-//                 // console.log(error && error.response, 'the error respne')
-//                 // if (error && error.response && error.response.status === 401) {
-//                 //     // clearUserSource();
-//                 // }
-//                 // if (error && error.response && error.response.data) {
-//                 //     if (!error.response.data.message) {
-//                 //         return rej({ ...error.response.data, msg: error.response.data.message || "Network Error" })
-//                 //     }
-//                 //     return rej(error.response.data)
-//                 // } else {
-//                 //     return rej({ message: "Network Error", msg: "Network Error" });
-//                 // }
-//             });
-//     });
-// }
+}
