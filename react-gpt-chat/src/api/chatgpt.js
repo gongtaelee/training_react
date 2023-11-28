@@ -19,6 +19,6 @@ export async function callOpenAIApi({role, content}){
       });
 
       const response = await completion.json();
-    //   console.log(response);
+      console.log(response);
       return response.choices[0].message;
 }
