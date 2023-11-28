@@ -8,6 +8,10 @@ export default function ChatMessage(props){
     // const currentUser = useSelector(getUser);
     const isPendingMessageState = useSelector(getPendingMessageState);
     const messageClass = role === 'user' ? 'sent' : 'received';
+    /*
+    시스템은 이미지 있음
+    사용자는 이미지 없음
+    */
     return (
         <div className={`message ${messageClass}`}>
             <p>{role} {content}</p>
