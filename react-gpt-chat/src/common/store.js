@@ -2,6 +2,7 @@ import { createStore, combineReducers, compose, applyMiddleware } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import messageReducer from '../state/message'
 import messageSaga from '../state/message/saga'
+import userSaga from '../state/user/saga'
 import userReducer from '../state/user'
 import { all } from 'redux-saga/effects';
 
@@ -17,7 +18,7 @@ const store = createStore(
 );
 
 function* rootSaga(){
-  yield all([messageSaga()]);
+  yield all([messageSaga(), userSaga()]);
 }
 sagaMiddleware.run(rootSaga);
 

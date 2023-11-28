@@ -4,7 +4,7 @@ import { OPENAI_API_KEY } from "../common/constant"
 
 export async function callOpenAIApi({role, content}){
     const configuration = new Configuration({
-      apiKey: OPENAI_API_KEY,
+      apiKey: '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',
     });
     const openai = new OpenAIApi(configuration);
     const systemPrompt = `Your name is BizQuery.AI, and you are an experienced program developer.
@@ -17,8 +17,7 @@ export async function callOpenAIApi({role, content}){
         messages: [{ role: "system", content: systemPrompt },
                    { role: role, content: content }],
       });
-
       const response = await completion.json();
-    //   console.log(response);
+      console.log(response);
       return response.choices[0].message;
 }

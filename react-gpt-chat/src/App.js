@@ -1,14 +1,21 @@
-import React from 'react';
-import store from './common/store';
-import { Provider } from 'react-redux';
+import React, { useEffect } from 'react';
 import HeaderContainer from './components/Header/HeaderContainer';
 import MainContainer from './components/Main/MainContainer';
 import FooterContainer from './components/Footer/FooterContainer';
+import { useSearchParams } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { actions } from './state/user'
 import './App.css';
 
 export default function App() {
+    const [queryParameters] = useSearchParams()
+    const encryptionKey = queryParameters.get("key");
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(actions.responseUser({ secretKey: encryptionKey }));
+    },[encryptionKey]);
+
     return (
-        <Provider store={store}>
         <div className='App'>
             <header>
                 <HeaderContainer />
@@ -18,6 +25,5 @@ export default function App() {
                 <FooterContainer />
             </section>
         </div>
-        </Provider>
     );
 }
