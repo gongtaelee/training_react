@@ -4,12 +4,13 @@ import { OPENAI_API_KEY } from "../common/constant"
 
 export async function callOpenAIApi({role, content}){
     const configuration = new Configuration({
-      apiKey: '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',
+      apiKey: OPENAI_API_KEY,
     });
     const openai = new OpenAIApi(configuration);
     const systemPrompt = `Your name is BizQuery.AI, and you are an experienced program developer.
                           If you don't know a question, answer that you don't know.`;
                           
+                          console.log(OPENAI_API_KEY)
     const completion = await openai.createChatCompletion({
         model: "gpt-3.5-turbo",
         temperature: 0.7,
